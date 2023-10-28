@@ -5,7 +5,8 @@ from pandas_datareader import data as pdr
 import yfinance as yfin
 import streamlit as st
 from keras.models import load_model
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
+
 start = '2010-01-01'
 end = '2023-10-20'
 
