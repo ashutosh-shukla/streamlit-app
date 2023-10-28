@@ -64,11 +64,18 @@ data_train_array=scaler.fit_transform(data_train)
 
 #load my model
 
+# Load your custom optimizer
+from tensorflow.keras.optimizers import Adam
 
-# Load your Keras model from the file
-model = load_model('keras_model.h5')
+custom_optimizer = Adam(learning_rate=0.001)  # Adjust the learning rate as needed
 
-# The rest of your code
+# Register the custom optimizer in a dictionary
+custom_objects = {'CustomAdam': custom_optimizer}
+
+# Load your Keras model with the custom objects registered
+model = load_model('keras_model.h5', custom_objects=custom_objects)
+
+# The rest of your code remains the same
 past_100 = data_train.tail(100)
 final_df = pd.concat([past_100, data_test], ignore_index=True)
 input_data = scaler.fit_transform(final_df)
@@ -93,7 +100,7 @@ y_test_array = y_test_array * scale_factor
 st.subheader('Predictions vs Original Chart')
 fig2 = plt.figure(figsize=(12, 6))
 plt.plot(y_test_array, 'b', label='Original Price')
-plt.plot(y_predicted, 'r', label='Predicted Price')
+plt plot(y_predicted, 'r', label='Predicted Price')
 plt.xlabel('Time')
 plt.ylabel('Price')
 plt.legend()
