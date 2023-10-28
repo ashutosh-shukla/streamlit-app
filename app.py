@@ -72,7 +72,7 @@ custom_optimizer = Adam(learning_rate=0.001)  # Adjust the learning rate as need
 custom_objects = {'CustomAdam': custom_optimizer}
 
 # Load your Keras model with the custom objects registered
-model = load_model('keras_model.h5', custom_objects=custom_objects,compile=False)
+model = load_model('keras_model.h5',compile=False)
 model.save('keras_model.h5', custom_objects=custom_objects)
 
 
