@@ -5,6 +5,7 @@ from pandas_datareader import data as pdr
 import yfinance as yfin
 import streamlit as st
 from keras.models import load_model
+from keras.optimizers import Adam
 start = '2010-01-01'
 end = '2023-10-20'
 
@@ -64,8 +65,13 @@ data_train_array=scaler.fit_transform(data_train)
 #load my model
 
 
-# Load your Keras model from the file
-model = load_model('keras_model.h5')
+custom_optimizer = Adam(learning_rate=0.001)  # Adjust the learning rate as needed
+
+# Register the custom optimizer in a dictionary
+custom_objects = {'CustomAdam': custom_optimizer}
+
+# Load your Keras model with the custom objects registered
+model = load_model('keras_model.h5', custom_objects=custom_objects)
 
 # The rest of your code
 past_100 = data_train.tail(100)
