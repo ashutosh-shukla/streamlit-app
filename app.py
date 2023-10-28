@@ -1,34 +1,15 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import yfinance as yfin
-import streamlit as st
-from keras.models import load_model
-from tensorflow.keras.optimizers import Adam
-
 start = '2010-01-01'
 end = '2023-10-20'
 
 st.title('Stock Price Analysis')
 user_input = st.text_input('Enter Stock Ticker', 'AAPL')
 
-# Fetch data from Yahoo Finance
-df = yfin.download(user_input, start=start, end=end)
-
-# Convert the index (Date) to a datetime column
-df['Date'] = df.index
-
-# Set the time zone of the datetime column to UTC
-df['Date'] = df['Date'].dt.tz_localize('UTC')
-
-# Set the 'Date' column as the new index
-df = df.set_index('Date')
-
+yfin.pdr_override()
+df = pdr.get_data_yahoo(user_input, start, end)
 
 # Describing data
 st.subheader('Data from 2010 to 2023')
 st.write(df.describe())
-
 
 st.subheader('Closing Price vs Time Chart')
 fig = plt.figure(figsize=(12, 6))
@@ -76,15 +57,8 @@ data_train_array=scaler.fit_transform(data_train)
 #load my model
 
 
-custom_optimizer = Adam(learning_rate=0.001)  # Adjust the learning rate as needed
-
-# Register the custom optimizer in a dictionary
-custom_objects = {'CustomAdam': custom_optimizer}
-
-# Load your Keras model with the custom objects registered
-model = load_model('keras_model.h5',compile=False)
-
-
+# Load your Keras model from the file
+model = load_model('keras_model.h5')
 
 # The rest of your code
 past_100 = data_train.tail(100)
