@@ -5,6 +5,7 @@ import yfinance as yfin
 import streamlit as st
 from keras.models import load_model
 from tensorflow.keras.optimizers import Adam
+import pytz  # Import the pytz library
 
 start = '2010-01-01'
 end = '2023-10-20'
@@ -15,8 +16,8 @@ user_input = st.text_input('Enter Stock Ticker', 'AAPL')
 # Fetch data from Yahoo Finance
 df = yfin.download(user_input, start=start, end=end)
 
-# Convert the index to a datetime index with UTC time zone
-df.index = df.index.tz_localize("UTC")
+# Set the time zone of the index to UTC using pytz
+df.index = df.index.tz_localize(pytz.utc)
 
 # Describing data
 st.subheader('Data from 2010 to 2023')
