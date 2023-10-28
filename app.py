@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from pandas_datareader import data as pdr
 import yfinance as yfin
 import streamlit as st
 from keras.models import load_model
@@ -14,15 +13,10 @@ st.title('Stock Price Analysis')
 user_input = st.text_input('Enter Stock Ticker', 'AAPL')
 
 # Fetch data from Yahoo Finance
-
 df = yfin.download(user_input, start=start, end=end)
 
-# Convert the index to a datetime index with UTC time zone
-df.index = df.index.tz_localize("UTC")
-
-#yfin.pdr_override()
-#df = pdr.get_data_yahoo(user_input, start, end)
-df.index = df.index.tz_localize("UTC")
+# Convert the index to the 'US/Eastern' time zone
+df.index = df.index.tz_convert('US/Eastern')
 
 # Describing data
 st.subheader('Data from 2010 to 2023')
